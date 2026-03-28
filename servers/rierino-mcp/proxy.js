@@ -64,6 +64,7 @@ let gatewayToken = null;
 // Token vault — ephemeral AES-256-GCM key, never leaves this process
 // Outbound (proxy → Claude):  JWT regex matches → encrypted handle
 // Inbound  (Claude → proxy):  encrypted handles → original JWT
+// Guardrail in case backend returns tokens in tool calls
 // ---------------------------------------------------------------------------
 const VAULT_KEY   = crypto.randomBytes(32);          // new key every process start
 const ENC_PREFIX  = '__RTOK__';                       // short, URL-safe sentinel

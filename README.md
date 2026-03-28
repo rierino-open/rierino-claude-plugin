@@ -38,15 +38,54 @@ ever sees opaque masked handles — real JWTs never leave the proxy process.
 
 ### 1. Configure credentials
 
-Create (or edit) `servers/rierino-mcp/.env`:
+> **Security note:** Do **not** store credentials in `servers/rierino-mcp/.env` or
+> anywhere inside the plugin folder. Claude Code can read files within the project
+> directory, which would expose your username and password in Claude's context.
+> Use one of the two approaches below instead.
 
-```env
-RIERINO_BASE_URL=https://your-instance.rierino.com
-RIERINO_USERNAME=your-username
-RIERINO_PASSWORD=your-password
+#### Option A — `env` block in `.mcp.json` (recommended)
+
+Pass credentials directly in your `.mcp.json` (or `claude_desktop_config.json`).
+This file is read by the Claude Code harness to spawn the MCP server and is
+**not** passed to Claude as conversation context.
+
+```json
+{
+  "mcpServers": {
+    "rierino": {
+      "command": "node",
+      "args": ["[PATH]/servers/rierino-mcp/proxy.js"],
+      "env": {
+        "RIERINO_BASE_URL": "https://your-instance.rierino.com",
+        "RIERINO_USERNAME": "your-username",
+        "RIERINO_PASSWORD": "your-password"
+      }
+    }
+  }
+}
 ```
 
-Add `servers/rierino-mcp/.env` to your `.gitignore`.
+Add `.mcp.json` to your `.gitignore` so credentials are never committed.
+
+#### Option B — `.env` file outside the project
+
+Store a `.env` file in a directory that is **not** inside your project tree
+(e.g. `~/.config/rierino/.env`) and point `cwd` to that directory:
+
+```json
+{
+  "mcpServers": {
+    "rierino": {
+      "command": "node",
+      "args": ["[PATH]/servers/rierino-mcp/proxy.js"],
+      "cwd": "/home/you/.config/rierino"
+    }
+  }
+}
+```
+
+`proxy.js` loads `.env` from its working directory, so this keeps credentials
+entirely outside any folder Claude can browse.
 
 ### 2. Project root `.env`
 Create a `.env` file in your **project root** (next to `.mcp.json`) with:
@@ -56,27 +95,14 @@ RIERINO_UI_BASE_URL=https://your-instance.rierino.com
 ```
 
 This is used by Claude to generate direct links to UI records (e.g. `${RIERINO_UI_BASE_URL}/app/design/common/ui?id={id}`).
+This file contains no credentials — only a public base URL — so it is safe to
+keep inside the project.
 
 Add `.env` to your `.gitignore`.
 
-### 3. Add mcp server for the proxy
-
-In your `.mcp.json` or `claude_desktop_config.json`:
-
-```json
-{
-  "mcpServers": {
-    "rierino": {
-      "command": "node",
-      "args": ["[PATH]/servers/rierino-mcp/proxy.js"]
-    }
-  }
-}
-```
-
 No `npm install` or build step — `proxy.js` has zero external dependencies.
 
-### 4. Verify
+### 3. Verify
 
 ```
 > /rierino-status
@@ -94,8 +120,7 @@ rierino-claude-plugin/
 │   └── plugin.json                         Plugin manifest (v1.0.0)
 │
 ├── servers/rierino-mcp/
-│   ├── proxy.js                            MCP stdio proxy (zero dependencies)
-│   └── .env                                Credentials (gitignore this)
+│   └── proxy.js                            MCP stdio proxy (zero dependencies)
 │
 ├── commands/
 │   ├── rierino-status.md                  /rierino-status — health check
@@ -226,10 +251,10 @@ Inbound requests from Claude have those markers swapped back before forwarding.
 
 ## Customization checklist
 
-- [ ] Set `RIERINO_BASE_URL` to your instance URL
-- [ ] Set `RIERINO_USERNAME` / `RIERINO_PASSWORD`
-- [ ] Set `RIERINO_UI_BASE_URL` to your UI URL
-- [ ] Add proxy.js to mcpServers
+- [ ] Set `RIERINO_BASE_URL`, `RIERINO_USERNAME`, `RIERINO_PASSWORD` in `.mcp.json` `env` block (or an out-of-project `.env`)
+- [ ] Set `RIERINO_UI_BASE_URL` in the project-root `.env`
+- [ ] Add `.mcp.json` and `.env` to `.gitignore`
+- [ ] Set the `proxy.js` path in `.mcp.json`
 
 ---
 
@@ -237,7 +262,7 @@ Inbound requests from Claude have those markers swapped back before forwarding.
 
 | Problem                       | Fix                                                          |
 | ----------------------------- | ------------------------------------------------------------ |
-| Login failed (401)            | Check `RIERINO_USERNAME` / `RIERINO_PASSWORD` in `.env`      |
+| Login failed (401)            | Check `RIERINO_USERNAME` / `RIERINO_PASSWORD` in `.mcp.json` `env` block |
 | `python3: command not found`  | Use `node -e` or `jq` instead when parsing tokens in shell   |
 | Tools not appearing in Claude | Check `.mcp.json` path; run `/rierino-mcp tools`             |
 | Token errors after restart    | Expected — ephemeral key regenerated each run, re-login auto |
