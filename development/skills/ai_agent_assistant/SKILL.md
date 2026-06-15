@@ -98,7 +98,7 @@ For the default `io.rierino.rai.openai.OpenAiChatModel` class, the following def
 
 ```json
 {
-  "apiKey": ["#{{rierino.system.openai.apikey}}"],
+  "apiKey": "#{{rierino.system.openai.apikey}}",
   "model": "gpt-5.4",
   "temperature": "1"
 }
@@ -146,8 +146,8 @@ Each guardrail type can be configured to include multiple entries for protecting
     "criticalAutoBlock": true
   },
   "inputGuardrails": [
-    {"preset": "jailbreak-basic", "action": "BLOCK", "riskLevel": "HIGH"},
-    {"preset": "pii-basic", "action": "MODIFY", "riskLevel": "HIGH"}
+    {"type": "regex-matcher", "config":{ "groups": ["jailbreak-basic"] }},
+    {"type": "regex-masker", "config":{ "groups": ["pii-basic"] }}
   ],
   "toolResponseGuardrails": [],
   "outputGuardrails": []
