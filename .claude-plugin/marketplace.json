@@ -1,0 +1,7 @@
+{
+  "name": "rierino-plugins",
+  "owner": { "name": "Rierino" },
+  "plugins": [
+    { "name": "rierino-development", "source": "./development" }
+  ]
+}

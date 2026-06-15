@@ -22,6 +22,7 @@ Use the available skills and agents for platform-specific tasks. Each skill has 
 | `drools_assistant` | Write Drools DRL rule files |
 | `test_data_generator` | Generate realistic mock JSON test data |
 | `workflow_explainer` | Explain saga flows in plain language |
+| `ai_agent_assistant` | Design AI agents |
 
 ## Naming & Data Conventions
 

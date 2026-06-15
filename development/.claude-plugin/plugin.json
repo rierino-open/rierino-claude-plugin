@@ -1,5 +1,5 @@
 {
-  "name": "rierino",
+  "name": "rierino-development",
   "version": "1.0.0",
   "description": "Connect Claude Code to the Rierino low-code development platform. Pull configuration, manage entities, query data, and automate platform operations via Rierino REST APIs.",
   "author": {

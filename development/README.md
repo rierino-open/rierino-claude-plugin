@@ -127,6 +127,7 @@ rierino-claude-plugin/
 │   └── rierino-mcp.md                     /rierino-mcp — list MCP capabilities
 │
 ├── agents/
+│   ├── ai_agent_assistant.md              AI agents
 │   ├── code_assistant.md                  Groovy & JavaScript scripting
 │   ├── component_builder.md               React editor components
 │   ├── drools_assistant.md                Drools rule (DRL) generation
@@ -145,6 +146,7 @@ rierino-claude-plugin/
     ├── global/
     │   ├── CONVENTIONS.md                 Naming & data-type standards
     │   └── RULES.md                       Operational rules (all skills)
+    ├── ai_agent_assistant/SKILL.md
     ├── code_assistant/SKILL.md
     ├── component_builder/SKILL.md
     ├── drools_assistant/SKILL.md
@@ -186,6 +188,7 @@ All skills follow a common pattern:
 
 | Skill                | Trigger / purpose                                           |
 | -------------------- | ----------------------------------------------------------- |
+| `ai_agent_assistant` | AI agent configurations                                     |
 | `code_assistant`     | Groovy scripts and JavaScript event handlers                |
 | `component_builder`  | React editor components for the page builder                |
 | `drools_assistant`   | Drools Rule Language (DRL) rule files                       |
@@ -209,6 +212,7 @@ Each agent's system prompt delegates to its matching skill.
 
 | Agent               | Purpose                                              |
 | ------------------- | ---------------------------------------------------- |
+| `ai_agent_assistant`| Design AI agents with instructions, models           |
 | `code_assistant`    | Generate and iterate on Groovy/JS scripts            |
 | `component_builder` | Build complete React editor components               |
 | `drools_assistant`  | Write and validate DRL rules                         |

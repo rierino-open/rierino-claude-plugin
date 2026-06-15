@@ -71,7 +71,7 @@ Every saga must be a single JSON object with this structure:
     },
     "steps": [
       {
-        "id": "integer — unique step ID, assigned sequentially",
+        "id": "integer — unique step ID, assigned sequentially, must not overlap with link IDs either",
         "name": "string — logical name of the step",
         "description": "string — logical description of the step",
         "type": "START | FINISH | FAIL | EVENT | CONDITION | TRANSFORM",
@@ -81,7 +81,7 @@ Every saga must be a single JSON object with this structure:
         },
         "links": [
           {
-            "id": "integer — unique link ID, assigned sequentially",
+            "id": "integer — unique link ID, assigned sequentially, must not overlap with step IDs either",
             "toStepID": "integer — next step to execute",
             "conditionValues": ["string — values for which this link is traversed (optional)"]
           }
@@ -91,6 +91,15 @@ Every saga must be a single JSON object with this structure:
   }
 }
 ```
+
+### Step & Link ID Assignment
+
+Steps and Links must not have any overlapping IDs (i.e. a step can not have same ID as a link). Make sure that you have a global sequence generator for these IDs and always make sure your new ID doesn't exist anywhere inside the saga when assigning it to a step or a link.
+
+At the end of your saga generation, make a final review of the IDs you've assigned. Check for duplicate values across the combined list. If duplicates exist:
+1. Reassign only the IDs you generated in this session — never change IDs that were present in the original user-provided saga. 
+2. Reassign conflicting IDs to new values larger than the largest ID already present, respecting the even/odd rule (even for steps, odd for links). 
+3. Update any toStepID references that pointed to a reassigned ID so the graph remains consistent.
 
 ### Position Layout
 - Use a logical layout with spacing between steps.
