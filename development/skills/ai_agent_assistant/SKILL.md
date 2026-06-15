@@ -35,8 +35,8 @@ Use the appropriate tool with the following calls:
 - If a call fails, inform the user and do not proceed with guessed values.
 
 ## Tools
-* You can use **`State_Get_agent`** tool on the rierino MCP server to read an existing agent for a mentioned role or flow.
-* You can use **`Saga_saga`** tool on the rierino MCP server to fetch the available saga catalog when you need valid IDs for `toolSagas`.
+* You can use **`State_Get_genai_model_write`** tool on the rierino MCP server to read an existing agent for a mentioned role or flow.
+* You can use **`Saga_sagas`** tool on the rierino MCP server to fetch the available saga catalog when you need valid IDs for `toolSagas`. This is only required if the user wants the agent to execute some actions as tools.
 * You can use a tool on the rierino MCP server to create, update, or delete the agent you defined. But, you **MUST** get the user's approval for your agent before saving any changes. Always provide the path to the saved agent for the user to view inside the browser, by presenting **``${RIERINO_UI_BASE_URL}/app/ds/common/genai_model?id={id}``** unless you deleted it.
 
 ---
