@@ -32,10 +32,11 @@ Claude Code supports plugins via the **Marketplace** feature. There are two ways
 ### Claude Desktop
 
 1. Open **Claude Desktop**.
-2. Go to **Settings → Extensions** (or **Plugins**, depending on your version).
-3. Click **Add Marketplace** and paste:
+2. Click **Customize**.
+3. Go to **Personal plugins -> + -> Create plugin -> Add marketplace**.
+3. Click **Add from a repository**. Paste:
    ```
-   https://raw.githubusercontent.com/rierino-open/rierino-claude-plugin/main/.claude-plugin/marketplace.json
+   rierino-open/rierino-claude-plugin
    ```
 4. Locate **rierino-development** and click **Install**.
 
@@ -53,11 +54,11 @@ When a new version is published to this repository, Claude Code shows an **Updat
 
 ### Update button does nothing / plugin does not reflect new changes
 
-Claude Code caches plugin files locally. If the **Update** button fails or the plugin still behaves like an older version after updating, work through these steps in order:
+Claude Code &  Desktop cache plugin files locally. If the **Update** button fails or the plugin still behaves like an older version after updating, work through these steps in order:
 
 **Step 1 — Remove and reload the plugin**
 
-1. Open `/plugins` in Claude Code.
+1. Open `/plugins` in Claude Code (or go to Customize -> Personal plugins on Claude Desktop).
 2. Find **rierino-development** and click **Remove** (or **Uninstall**).
 3. Re-add the plugin using one of the installation methods above.
 
@@ -69,13 +70,9 @@ Close Claude Code (or Claude Desktop) completely and reopen it. On some systems 
 
 If the plugin still does not update correctly, the marketplace index itself may be cached:
 
-1. Open `/plugins` and remove the **rierino-plugins** marketplace entry.
+1. Open `/plugins` (or go to Customize -> Personal plugins on Claude Desktop) and remove the **rierino-plugins** marketplace entry.
 2. Restart Claude.
-3. Re-add the marketplace URL:
-   ```
-   https://raw.githubusercontent.com/rierino-open/rierino-claude-plugin/main/.claude-plugin/marketplace.json
-   ```
-4. Reinstall the **rierino-development** plugin.
+3. Re-add the plugin using one of the installation methods above.
 
 ### MCP proxy not connecting
 
