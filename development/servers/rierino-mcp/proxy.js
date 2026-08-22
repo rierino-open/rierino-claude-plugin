@@ -170,7 +170,7 @@ async function refresh() {
   try {
     const response = await httpRequest(
       `${ADMIN_GATEWAY}/api/auth/refresh/rpc`,
-      { headers: { Authorization: `Bearer ${gatewayToken}` } }
+      { headers: { Authorization: `gateway_token ${gatewayToken}` } }
     );
 
     if (response.status === 200 && response.body?.gateway_token) {
@@ -195,7 +195,7 @@ async function callMcp(mcpRequest) {
 
   const response = await httpRequest(
     `${ADMIN_GATEWAY}/api/request/rpc/CallMCPServer`,
-    { headers: { Authorization: `Bearer ${gatewayToken}` } },
+    { headers: { Authorization: `gateway_token ${gatewayToken}` } },
     realRequest
   );
 
