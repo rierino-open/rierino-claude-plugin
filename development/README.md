@@ -62,8 +62,8 @@ This file is read by the Claude Code harness to spawn the MCP server and is
       }
     },
     "rierino-docs": {
-      "type": "http",
-      "url": "https://docs.rierino.com/~gitbook/mcp"
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://docs.rierino.com/~gitbook/mcp"]
     }
   }
 }
@@ -85,8 +85,8 @@ Store a `.env` file in a directory that is **not** inside your project tree
       "cwd": "/home/you/.config/rierino"
     },
     "rierino-docs": {
-      "type": "http",
-      "url": "https://docs.rierino.com/~gitbook/mcp"
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://docs.rierino.com/~gitbook/mcp"]
     }
   }
 }
