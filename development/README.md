@@ -60,6 +60,10 @@ This file is read by the Claude Code harness to spawn the MCP server and is
         "RIERINO_USERNAME": "your-username",
         "RIERINO_PASSWORD": "your-password"
       }
+    },
+    "rierino-docs": {
+      "type": "http",
+      "url": "https://docs.rierino.com/~gitbook/mcp"
     }
   }
 }
@@ -79,6 +83,10 @@ Store a `.env` file in a directory that is **not** inside your project tree
       "command": "node",
       "args": ["[PATH]/servers/rierino-mcp/proxy.js"],
       "cwd": "/home/you/.config/rierino"
+    },
+    "rierino-docs": {
+      "type": "http",
+      "url": "https://docs.rierino.com/~gitbook/mcp"
     }
   }
 }
