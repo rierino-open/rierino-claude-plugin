@@ -10,8 +10,8 @@
       }
     },
     "rierino-docs": {
-      "command": "npx",
-      "args": ["-y", "mcp-remote", "https://docs.rierino.com/~gitbook/mcp"]
+      "type": "http",
+      "url": "https://docs.rierino.com/~gitbook/mcp"
     }
   }
 }
