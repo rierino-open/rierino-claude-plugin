@@ -1,14 +1,30 @@
 {
   "name": "rierino-development",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Connect Claude Code to the Rierino low-code development platform. Pull configuration, manage entities, query data, and automate platform operations via Rierino REST APIs.",
   "author": {
     "name": "Rierino"
   },
-  "components": {
-    "mcpServers": ".mcp.json",
-    "skills": "skills/",
-    "commands": "commands/",
-    "agents": "agents/"
+  "repository": "https://github.com/rierino-open/rierino-claude-plugin",
+  "userConfig": {
+    "base_url": {
+      "type": "string",
+      "title": "Rierino base URL",
+      "description": "Base URL of your Rierino instance, e.g. https://your-instance.rierino.com",
+      "required": true
+    },
+    "username": {
+      "type": "string",
+      "title": "Rierino username",
+      "description": "Username used to log in to Rierino",
+      "required": true
+    },
+    "password": {
+      "type": "string",
+      "title": "Rierino password",
+      "description": "Password used to log in to Rierino (stored in your system's secure credential store)",
+      "required": true,
+      "sensitive": true
+    }
   }
 }

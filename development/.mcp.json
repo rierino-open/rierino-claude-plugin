@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "rierino": {
+      "command": "node",
+      "args": ["${CLAUDE_PLUGIN_ROOT}/servers/rierino-mcp/proxy.js"],
+      "env": {
+        "RIERINO_BASE_URL": "${user_config.base_url}",
+        "RIERINO_USERNAME": "${user_config.username}",
+        "RIERINO_PASSWORD": "${user_config.password}"
+      }
+    },
+    "rierino-docs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://docs.rierino.com/~gitbook/mcp"]
+    }
+  }
+}
