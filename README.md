@@ -8,26 +8,29 @@ Connect [Claude Code](https://claude.ai/code) to the [Rierino](https://rierino.c
 
 ### Claude Code (CLI)
 
-Claude Code supports plugins via the **Marketplace** feature. There are two ways to install:
+Claude Code supports plugins via the **Marketplace** feature.
 
-#### Option A — Add the marketplace, then install the plugin
+#### Add the marketplace, then install the plugin
 
 1. Open Claude Code in your terminal.
 2. Run `/plugins` to open the plugin manager.
 3. Add the marketplace source:
    ```
-   https://raw.githubusercontent.com/rierino-open/rierino-claude-plugin/main/.claude-plugin/marketplace.json
+   rierino-open/rierino-claude-plugin
    ```
 4. Find **rierino-development** in the list and click **Install**.
+5. Enter your Rierino base URL, username and password when asked.
 
-#### Option B — Install directly from the plugin URL
+Or from your shell:
 
-1. Open Claude Code in your terminal.
-2. Run `/plugins` and choose **Add Plugin from URL**.
-3. Enter the plugin source URL:
-   ```
-   https://raw.githubusercontent.com/rierino-open/rierino-claude-plugin/main/development/.claude-plugin/plugin.json
-   ```
+```bash
+claude plugin marketplace add rierino-open/rierino-claude-plugin
+claude plugin install rierino-development@rierino-plugins
+```
+
+> Add the marketplace by repository (`rierino-open/rierino-claude-plugin`),
+> not by the raw `marketplace.json` URL. With the raw URL only that one file is
+> downloaded, so the plugin's files can't be found and installation fails.
 
 ### Claude Desktop
 
@@ -76,7 +79,7 @@ If the plugin still does not update correctly, the marketplace index itself may 
 
 ### MCP proxy not connecting
 
-- Check that credentials are present in `development/servers/rierino-mcp/.env`.
+- Check your base URL, username and password in the plugin options (`claude plugin configure rierino-development@rierino-plugins`).
 - Run `/rierino-status` to see a connectivity summary.
 - Run `/rierino-mcp tools` to list available MCP tools and confirm the proxy is reachable.
 

@@ -48,7 +48,7 @@ See `skills/global/RULES.MD` for the full list. Key rules:
 ## MCP Connection
 
 The Rierino MCP proxy runs via `servers/rierino-mcp/proxy.js`.
-Credentials are in `servers/rierino-mcp/.env` (never commit this file).
+Base URL, username and password are plugin options, entered when the plugin is enabled (password is kept in the system credential store).
 
 Run `/rierino-status` to verify connectivity, `/rierino-mcp tools` to list available tools.
 

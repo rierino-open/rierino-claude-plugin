@@ -3,7 +3,8 @@
  * Rierino MCP Proxy
  * Bridges Claude's stdio MCP protocol to the Rierino HTTP JSON-RPC MCP endpoint.
  *
- * Credentials are read exclusively from .env (project root or script dir).
+ * Credentials come from environment variables (set by the plugin options in
+ * .mcp.json) or, as a fallback, from .env (script dir or working dir).
  * Raw JWTs are never exposed to Claude — they are replaced with AES-256-GCM
  * encrypted handles on the way out and decrypted on the way in.
  *
@@ -176,20 +177,27 @@ async function refresh() {
     if (response.status === 200 && response.body?.gateway_token) {
       gatewayToken = response.body.gateway_token;
       logErr('Token refreshed.');
-    } else {
-      logErr('Refresh failed — re-logging in...');
-      await login();
+      return;
     }
+    logErr('Refresh failed — re-logging in...');
   } catch (err) {
     logErr(`Refresh error: ${err.message} — re-logging in...`);
+  }
+  try {
     await login();
+  } catch (err) {
+    // Keep running: the next request retries login instead of crashing the proxy
+    gatewayToken = null;
+    logErr(`Re-login failed: ${err.message}`);
   }
 }
 
 // ---------------------------------------------------------------------------
 // MCP forwarding
 // ---------------------------------------------------------------------------
-async function callMcp(mcpRequest) {
+async function callMcp(mcpRequest, retried = false) {
+  if (!gatewayToken) await login();
+
   // Restore any encrypted handles Claude may have echoed back
   const realRequest = unmaskTokens(mcpRequest);
 
@@ -199,10 +207,10 @@ async function callMcp(mcpRequest) {
     realRequest
   );
 
-  if (response.status === 401) {
+  if (response.status === 401 && !retried) {
     logErr('401 received — refreshing token and retrying...');
     await refresh();
-    return callMcp(mcpRequest);   // retry with original (still-masked) request
+    return callMcp(mcpRequest, true);   // retry once with original (still-masked) request
   }
 
   // Mask any JWTs in the response before handing to Claude
@@ -219,7 +227,7 @@ let clientProtocolVersion = null;
 
 async function main() {
   if (!ADMIN_GATEWAY || !USERNAME || !PASSWORD) {
-    logErr('ERROR: RIERINO_BASE_URL, RIERINO_USERNAME, and RIERINO_PASSWORD must be set in .env');
+    logErr('ERROR: RIERINO_BASE_URL, RIERINO_USERNAME, and RIERINO_PASSWORD must be set (plugin options or .env)');
     process.exit(1);
   }
 
@@ -227,7 +235,9 @@ async function main() {
   await login();
   logErr('Authenticated. Token vault active. Proxy ready.');
 
-  const timer = setInterval(refresh, REFRESH_INTERVAL_MS);
+  const timer = setInterval(() => {
+    refresh().catch(err => logErr(`Scheduled refresh error: ${err.message}`));
+  }, REFRESH_INTERVAL_MS);
   timer.unref();
 
   const rl = readline.createInterface({ input: process.stdin, terminal: false });
@@ -288,6 +298,9 @@ async function main() {
     process.exit(0);
   });
 }
+
+// Last line of defence: log stray rejections instead of letting Node kill the proxy
+process.on('unhandledRejection', err => logErr(`Unhandled rejection: ${err?.message || err}`));
 
 main().catch(err => {
   process.stderr.write(`[rierino-mcp] Fatal: ${err.message}\n`);

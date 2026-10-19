@@ -13,4 +13,4 @@
 
 ## Platform URLs
 
-Read `RIERINO_UI_BASE_URL` from the project root `.env` for constructing UI links such as: `${RIERINO_UI_BASE_URL}/app/design/common/ui?id={id}`
+Read `RIERINO_UI_BASE_URL` from the project root `.env` for constructing UI links such as: `${RIERINO_UI_BASE_URL}/app/design/common/ui?id={id}`. If it is not set, use `${user_config.base_url}` as `RIERINO_UI_BASE_URL`.
