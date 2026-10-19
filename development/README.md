@@ -62,6 +62,36 @@ echo '{"base_url":"https://your-instance.rierino.com","username":"admin","passwo
 > or anywhere inside the plugin or project folder — Claude can read files there.
 > `proxy.js` still reads a `.env` as a fallback for running it by hand.
 
+#### `rierino-docs` via `npx` (alternative)
+
+The plugin connects to `rierino-docs` over HTTP, so no Node or npm is needed.
+For clients that only support local (stdio) MCP servers, such as older Claude
+Desktop versions, use `mcp-remote` instead:
+
+```json
+{
+  "mcpServers": {
+    "rierino-docs": {
+      "command": "npx",
+      "args": ["-y", "mcp-remote", "https://docs.rierino.com/~gitbook/mcp"]
+    }
+  }
+}
+```
+
+On native Windows (not WSL), wrap `npx` with `cmd /c`:
+
+```json
+{
+  "mcpServers": {
+    "rierino-docs": {
+      "command": "cmd",
+      "args": ["/c", "npx", "-y", "mcp-remote", "https://docs.rierino.com/~gitbook/mcp"]
+    }
+  }
+}
+```
+
 ### 2. UI links (optional)
 
 Skills generate direct links to UI records (e.g.
